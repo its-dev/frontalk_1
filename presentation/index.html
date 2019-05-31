@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <title>reveal.js</title>
+
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/white.css">
+
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h1>Frontalk #1</h1>
+                    <h2>Routing</h2>
+                </section>
+                <section>
+                    <section>
+                        <h2>Что такое роутинг?</h2>
+                        <p>Маршрутизация</p>
+                        <p>Конфигурирование</p>
+                    </section>
+                    <section>
+                        <h2>Angular</h2>
+                        <pre><code data-trim data-line-numbers>
+                            const appRoutes: Routes = [
+                                { path: 'crisis-center', component: CrisisList },
+                                { path: 'hero/:id',      component: HeroDetail },
+                                {
+                                    path: 'heroes',
+                                    component: HeroList,
+                                    data: { title: 'Heroes List' }
+                                },
+                                { path: '',
+                                    redirectTo: '/heroes',
+                                    pathMatch: 'full'
+                                },
+                                { path: '**', component: PageNotFound }
+                            ];
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Vue</h2>
+                        <pre><code data-trim data-line-numbers>
+                            const router = new VueRouter({
+                                routes: [
+                                    {
+                                        path: '/user/:id', component: User,
+                                        children: [
+                                            { path: 'posts', component: UserPosts }
+                                        ]
+                                    },
+                                    {
+                                        path: '/foo',
+                                        component: Foo,
+                                        props: { default: true, sidebar: false }
+                                        beforeRouteEnter (to, from, next) {},
+                                        beforeRouteUpdate (to, from, next) {},
+                                        beforeRouteLeave (to, from, next) {},
+                                    },
+                                    { path: '/', component: Home, name: 'home' },
+                                    { path: '/a', redirect: to => {...} }
+                                ]
+                            })
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>react-router</h2>
+                        <pre><code data-trim data-line-numbers>
+                            import { Router, Switch, Route  } = 'react-router'
+                            import { createBrowserHistory } = 'react-router-dom'
+                            const history = createBrowserHistory()
+                            ...
+                            return (
+                                &lt;Router history={history}&gt;
+                                    &lt;Switch&gt;
+                                        &lt;Route exact path="/" component={Home}/&gt;
+                                        &lt;Route path="/about" component={About}/&gt;
+                                        &lt;Route path="/:user" component={User}/&gt;
+                                        &lt;Route component={NoMatch}/&gt;
+                                    &lt;/Switch&gt;
+                                &lt;/Router&gt;
+                            )
+                            ...
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>router5</h2>
+                        <pre><code data-trim data-line-numbers>
+                            import createRouter from 'router5'
+                            import browserPlugin from 'router5-plugin-browser'
+                            const routes = [
+                                { name: 'users', path: '/users', children: [
+                                    { name: 'view', path: '/:id'},
+                                    { name: 'view', path: '/view'},
+                                    { name: 'list', path: '/list'}
+                                ]}
+                            ]
+                            const router = createRouter(routes)
+                            router.usePlugin(browserPlugin())
+                            router.start()
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+
+                        <div style="display: flex; justify-content: center;">
+                            <div style="width: 50%;">
+                                <h1>+</h1>
+                                <p>Подумали за нас</p>
+                                <p>Масштабируемость</p>
+                                <p>Все из коробки</p>
+                            </div>
+                            <div style="width: 50%;">
+                                <h1>-</h1>
+                                <p>Подумали за нас</p>
+                                <p>Кастомизация</p>
+                                <p>Зависимость</p>
+                                <p style="color: red;">Загрузка по сети</p>
+                                <p style="color: red;">Парсинг кода</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h2>Оптимальный размер</h2>
+                        <img src="./sizeapp.png" alt="#">
+                    </section>
+                    <section>
+                        <h5>react+react-router+effector</h5>
+                        <table style="font-size: 20px">
+                            <tr>
+                                <td></td>
+                                <td>min</td>
+                                <td>min+gzip</td>
+                            </tr>
+                            <tr>
+                                <td>effector@0.18.10</td>
+                                <td>17.1 kb</td> <td>5.9 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react@16.8.6</td>
+                                <td>6.5 kb</td> <td>2.8 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react-dom@16.8.6</td>
+                                <td>103.7 kb</td> <td>32.9 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react-router@4.3.0</td>
+                                <td>27 kb</td> <td>7.3 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react-router-dom@4.3.0</td>
+                                <td>37.4 kb</td> <td>9.6 kb</td>
+                            </tr>
+                            <tr>
+                                <td>total</td>
+                                <td>208.8 kb</td> <td>65.8 kb</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h5>react+router5+effector</h5>
+                        <table style="font-size: 20px">
+                            <tr>
+                                <td></td>
+                                <td>min</td>
+                                <td>min+gzip</td>
+                            </tr>
+                            <tr>
+                                <td>effector@0.18.10</td>
+                                <td>17.1 kb</td> <td>5.9 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react@16.8.6</td>
+                                <td>6.5 kb</td> <td>2.8 kb</td>
+                            </tr>
+                            <tr>
+                                <td>react-dom@16.8.6</td>
+                                <td>103.7 kb</td> <td>32.9 kb</td>
+                            </tr>
+                            <tr>
+                                <td>router5@7.0.2</td>
+                                <td>28.9 kb</td> <td>8.7 kb</td>
+                            </tr>
+                            <tr>
+                                <td>router5-plugin-browser@7.0.2</td>
+                                <td>3.9 kb</td> <td>1.7 kb</td>
+                            </tr>
+                            <tr>
+                                <td>router5-plugin-persistent-params@7.0.2</td>
+                                <td>1.1 kb</td> <td>572 б</td>
+                            </tr>
+                            <tr>
+                                <td>total</td>
+                                <td>178.3 kb</td> <td>59.8 kb</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h2>Немного Пруфов</h2>
+                        <p>Перевод: <a href="https://medium.com/web-standards/the-cost-of-javascript-a51051b3fde6">Сколько стоит JavaScript?</a></p>
+                        <p>Оригинал: <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/javascript-startup-optimization/">JavaScript Start-up Optimization</a></p>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>Hand-made</h1>
+                    </section>
+                    <section>
+                        <h2>Struct</h2>
+                        <ul>
+                            <li>
+                                <span>models</span>
+                                <ul>
+                                    <li>location</li>
+                                    <li>config</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span>services</span>
+                                <ul>
+                                    <li>parser</li>
+                                    <li>use.router</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span>components</span>
+                                <ul>
+                                    <li>link</li>
+                                    <li>nav.link</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Summary</h2>
+                        <ul>
+                            <li>Windows location api</li>
+                            <li>Single config</li>
+                            <li>UI not dependent</li>
+                            <li>Url match</li>
+                            <li>Nested</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <h2>Tasks</h2>
+                    <ul>
+                        <li>Tests parser</li>
+                        <li>Documentation</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true }
+                ]
+            });
+        </script>
+    </body>
+</html>
